@@ -21,7 +21,7 @@ const quoteInquirySchema = z.object({
 export const submitQuoteInquiry = createServerFn({ method: "POST" })
   .validator((input) => quoteInquirySchema.parse(input))
   .handler(async ({ data }) => {
-    if (!process.env['SUPABASE_SERVICE_ROLE_KEY']) throw new Error("Online inquiries are temporarily unavailable. Please email Omfoodandspicesllp@gmail.com or call +91 81407 12205.");
+    if (!process.env['SUPABASE_SERVICE_ROLE_KEY']) throw new Error("Inquiry storage is unavailable. Use the WhatsApp enquiry form or contact us directly.");
     const ipAddress = getRequestHeader("cf-connecting-ip") ?? "unknown";
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ipAddress));
     const keyHash = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");

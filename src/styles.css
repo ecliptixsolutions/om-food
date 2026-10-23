@@ -252,6 +252,8 @@
 .faq-list details[open] summary::after { content: "\2212"; }
 .faq-list details p { max-width: 760px; margin: -3px 0 20px; color: var(--muted-foreground); font-size: var(--font-body); line-height: 1.6; }
 .page-intro { padding-block: 78px 58px; }
+.legal-back-link { margin-bottom: 24px; border-color: var(--brand-line); background: var(--brand-white); color: var(--brand-forest); text-decoration: none; }
+.legal-back-link:hover { border-color: var(--brand-copper); background: var(--brand-paper); color: var(--brand-forest); }
 .page-intro h1 { max-width: 800px; margin: 0; color: var(--brand-forest); font-size: var(--font-hero); font-weight: 650; line-height: 1.08; letter-spacing: -.03em; }
 .page-intro > p:last-child { max-width: 690px; margin: 20px 0 0; color: var(--muted-foreground); font-size: var(--font-body); line-height: 1.6; }
 .text-section { max-width: 760px; }
@@ -284,6 +286,9 @@
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px 14px; }
 .form-grid label { display: grid; gap: 8px; color: var(--brand-forest); font-size: var(--font-label); font-weight: 600; }
 .form-grid input, .form-grid select, .form-grid textarea { width: 100%; min-width: 0; border: 1px solid var(--brand-line); border-radius: 0; background: var(--brand-white); color: var(--brand-charcoal); padding: 12px 13px; font-size: var(--font-body); outline: none; }
+.form-grid select { min-height: 48px; text-overflow: ellipsis; }
+.form-field-group { display: grid; align-content: start; gap: 8px; }
+.form-field-note { color: var(--muted-foreground); font-size: var(--font-small); font-weight: 400; line-height: 1.5; }
 .form-grid input, .form-grid select { min-height: 48px; }
 .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus { border-color: var(--brand-forest); box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand-forest) 15%, transparent); }
 .form-grid input::placeholder, .form-grid textarea::placeholder { color: oklch(0.58 0.02 145); }
@@ -298,6 +303,7 @@
 .form-error { border: 1px solid oklch(0.65 0.16 25 / .4); background: oklch(0.97 0.025 25); color: oklch(0.42 0.14 25); }
 .form-success { display: flex; align-items: center; gap: 8px; border: 1px solid oklch(0.69 0.08 145 / .4); background: oklch(0.96 0.03 145); color: var(--brand-forest); }
 .form-success svg { width: 16px; }
+.form-success a { color: inherit; font-weight: 700; text-underline-offset: 3px; }
 .form-note { max-width: 640px; margin: -8px 0 0; color: var(--muted-foreground); font-size: var(--font-small); line-height: 1.7; }
 .site-footer { background: var(--brand-forest); color: var(--brand-paper); }
 .footer-main { display: grid; grid-template-columns: 1.25fr .7fr 1fr; gap: 50px; padding-block: 54px 44px; }

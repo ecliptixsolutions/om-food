@@ -1,12 +1,10 @@
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, ChevronDown, Leaf, Mail, MapPin, Menu, Phone, Send } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
+import { ArrowLeft, ArrowRight, ChevronDown, Leaf, Mail, MapPin, Menu, Phone, Send } from "lucide-react";
 import { FloatingContact } from "@/components/floating-contact";
 import { LanguageSelector } from "@/components/language-selector";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { Button } from "@/components/ui/button";
-import { submitQuoteInquiry } from "@/lib/quote-inquiries.functions";
 import { useLanguage } from "@/lib/i18n";
 import { productCatalog } from "@/lib/product-catalog";
 
@@ -79,73 +77,100 @@ export function Eyebrow({ children, light = false }: { children: React.ReactNode
   return <p className={`eyebrow${light ? " eyebrow-light" : ""}`}><span />{typeof children === "string" ? t(children) : children}</p>;
 }
 
-export function PageIntro({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
+export function PageIntro({ eyebrow, title, description, backToSite = false }: { eyebrow: string; title: string; description: string; backToSite?: boolean }) {
   const { t } = useLanguage();
-  return <section className="page-intro wrap"><Eyebrow>{eyebrow}</Eyebrow><h1>{t(title)}</h1><p>{t(description)}</p></section>;
+  return <section className="page-intro wrap">{backToSite && <Button asChild variant="outline" className="legal-back-link"><Link to="/"><ArrowLeft aria-hidden="true" />{t("Back to Site")}</Link></Button>}<Eyebrow>{eyebrow}</Eyebrow><h1>{t(title)}</h1><p>{t(description)}</p></section>;
 }
 
 export function QuoteForm({ selectedProduct = "" }: { selectedProduct?: string }) {
   const { t } = useLanguage();
-  const submit = useServerFn(submitQuoteInquiry);
-  const [submitting, setSubmitting] = useState(false);
-  const [accepted, setAccepted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [handoff, setHandoff] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [opened, setOpened] = useState(false);
+  const openedOnce = useRef(false);
+  const [quantityOption, setQuantityOption] = useState("");
+  const [customQuantity, setCustomQuantity] = useState("");
+  const [packagingOption, setPackagingOption] = useState("");
+  const [customPackaging, setCustomPackaging] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    if (submitting || !form.reportValidity()) return;
+    if (openedOnce.current) return;
+    setFeedback(""); setHandoff("");
+    if (!form.reportValidity()) return;
     const values = Object.fromEntries(new FormData(form).entries());
-    setSubmitting(true);
-    setErrorMessage("");
-    setAccepted(false);
-    try {
-      const result = await submit({ data: {
-        full_name: String(values['full_name'] ?? ""),
-        company_name: String(values['company_name'] ?? ""),
-        business_email: String(values['business_email'] ?? ""),
-        phone: String(values['phone'] ?? ""),
-        country: String(values['country'] ?? ""),
-        product_interest: String(values['product_interest'] ?? ""),
-        required_quantity: String(values['required_quantity'] ?? ""),
-        packaging_preference: String(values['packaging_preference'] ?? ""),
-        destination: String(values['destination'] ?? ""),
-        delivery_timeline: String(values['delivery_timeline'] ?? ""),
-        message: String(values['message'] ?? ""),
-        privacy_consent: values['privacy_consent'] === "on",
-        website: String(values['website'] ?? ""),
-      } });
-      if (result.accepted) {
-        setAccepted(true);
-        form.reset();
-      }
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "We could not submit your inquiry. Please try again.");
-    } finally {
-      setSubmitting(false);
+    const phone = String(values["phone"] ?? "").trim();
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phone && (phoneDigits.length < 7 || phoneDigits.length > 15)) {
+      setPhoneError(t("Use 7–15 digits, including your country code."));
+      (form.elements.namedItem("phone") as HTMLInputElement).focus();
+      return;
     }
+    setPhoneError("");
+    const quantity = quantityOption === "Other / Custom Quantity" ? `${t(quantityOption)}: ${customQuantity}` : quantityOption ? t(quantityOption) : "";
+    const packaging = packagingOption === "Custom Packaging" ? `${t(packagingOption)}: ${customPackaging}` : packagingOption ? t(packagingOption) : "";
+    const product = productCatalog.find(item => item.name === values["product_interest"]);
+    const lines = [
+      "Hello OM Food and Spices LLP,",
+      "",
+      t("I would like to submit a product enquiry."),
+      "",
+      t("Customer Details:"),
+      `${t("Name: ")}${values["full_name"]}`,
+      `${t("Company: ")}${values["company_name"]}`,
+      `${t("Email: ")}${values["business_email"]}`,
+      ...(phone ? [`${t("Phone: ")}${phone}`] : []),
+      `${t("Country: ")}${values["country"]}`,
+      ...(values["destination"] ? [`${t("Destination: ")}${values["destination"]}`] : []),
+      ...(values["delivery_timeline"] ? [`${t("Delivery timeline: ")}${values["delivery_timeline"]}`] : []),
+      "",
+      t("Product Details:"),
+      `${t("Product: ")}${product ? t(product.name) : String(values["product_interest"])}`,
+      ...(quantity ? [`${t("Required Quantity: ")}${quantity}`] : []),
+      ...(packaging ? [`${t("Packaging Preference: ")}${packaging}`] : []),
+      "",
+      t("Message / Requirements:"),
+      String(values["message"] ?? ""),
+      "",
+      t("Please share the available specifications, pricing, packaging options, and export details."),
+      "",
+      t("Thank you."),
+    ];
+    const url = whatsappUrl(lines.join("\n"));
+    let popup: Window | null = null;
+    try { popup = window.open(url, "_blank"); } catch { /* Show the direct link fallback below. */ }
+    if (popup) {
+      popup.opener = null;
+      openedOnce.current = true;
+      setOpened(true);
+      setFeedback(t("WhatsApp opened with your enquiry draft. Review it and press Send to contact the company."));
+    } else setHandoff(url);
   }
 
   return (
-    <form className="quote-form" onSubmit={handleSubmit}>
+    <form className="quote-form" onSubmit={handleSubmit} onChange={() => { setFeedback(""); setHandoff(""); }}>
       <label className="spam-trap" aria-hidden="true">Leave this empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
       <div className="form-grid">
         <label>Full name <input name="full_name" autoComplete="name" maxLength={120} required placeholder="Your name" /></label>
         <label>Company name <input name="company_name" autoComplete="organization" maxLength={160} required placeholder="Business name" /></label>
         <label>Business email <input name="business_email" type="email" autoComplete="email" maxLength={255} required placeholder="name@company.com" /></label>
-        <label>Phone / WhatsApp <input name="phone" type="tel" autoComplete="tel" maxLength={40} placeholder="Include country code" /></label>
+        <label>Phone / WhatsApp <input name="phone" type="tel" autoComplete="tel" maxLength={40} aria-invalid={Boolean(phoneError)} aria-describedby={phoneError ? "quote-phone-error" : undefined} onChange={() => setPhoneError("")} placeholder="Include country code" />{phoneError && <small id="quote-phone-error" className="field-error" role="alert">{phoneError}</small>}</label>
         <label>Country <input name="country" autoComplete="country-name" maxLength={100} required placeholder="Country" /></label>
         <label>Product of interest <select name="product_interest" defaultValue={selectedProduct} required><option value="" disabled>Select a product</option>{productCatalog.map(product => <option key={product.name} value={product.name}>{t(product.name)}</option>)}<option value="Other product">{t("Other product")}</option></select></label>
-        <label>Required quantity <input name="required_quantity" maxLength={120} placeholder="Quantity and unit" /></label>
-        <label>Packaging preference <input name="packaging_preference" maxLength={200} placeholder="If known" /></label>
+        <label>{t("Required quantity")}<select name="required_quantity" value={quantityOption} onChange={event => setQuantityOption(event.target.value)}><option value="" disabled>{t("Select required quantity")}</option>{["Sample / Trial Order", "100–500 kg", "500 kg–1 Metric Ton", "1–5 Metric Tons", "5–10 Metric Tons", "10–20 Metric Tons", "20+ Metric Tons", "Other / Custom Quantity"].map(option => <option key={option} value={option}>{t(option)}</option>)}</select></label>
+        {quantityOption === "Other / Custom Quantity" && <label>{t("Specify Quantity and Unit")}<input name="custom_quantity" value={customQuantity} onChange={event => setCustomQuantity(event.target.value)} maxLength={120} required pattern="\s*[0-9]+(?:[.,][0-9]+)?\s*[A-Za-z][A-Za-z ]{0,30}\s*" title={t("Enter a quantity and unit, such as 250 kg.")} placeholder={t("For example, 250 kg or 2 metric tons")} /></label>}
+        <div className="form-field-group"><label htmlFor="packaging_preference">{t("Packaging preference")}</label><select id="packaging_preference" aria-describedby="packaging-note" name="packaging_preference" value={packagingOption} onChange={event => setPackagingOption(event.target.value)}><option value="" disabled>{t("Select packaging preference")}</option>{["Standard Bulk Packaging", "10 kg Bags", "20 kg Bags", "25 kg Bags", "50 kg Bags", "Bulk Bags / Jumbo Bags", "Food-Grade Packaging", "Export Packaging", "Custom Packaging", "No Preference / Recommend Suitable Packaging"].map(option => <option key={option} value={option}>{t(option)}</option>)}</select><small id="packaging-note" className="form-field-note">{t("Packaging options are subject to product availability and company confirmation.")}</small></div>
+        {packagingOption === "Custom Packaging" && <label>{t("Specify Packaging Requirements")}<input name="custom_packaging" value={customPackaging} onChange={event => setCustomPackaging(event.target.value)} maxLength={180} required /></label>}
         <label>Destination / delivery location <input name="destination" maxLength={200} placeholder="Port, city or region" /></label>
         <label>Target delivery timeline <input name="delivery_timeline" maxLength={120} placeholder="If known" /></label>
         <label className="form-wide">Message / product requirements <textarea name="message" rows={5} maxLength={3000} required placeholder="Share preferred format, quantity, specifications or other requirements." /></label>
       </div>
       <label className="consent-row"><input name="privacy_consent" type="checkbox" required /><span>I agree that OM Food and Spices LLP may use these details to respond to my inquiry. Read the <Link to="/privacy">privacy policy</Link>.</span></label>
-      {errorMessage && <p className="form-feedback form-error" role="alert">{errorMessage}</p>}
-      {accepted && <p className="form-feedback form-success" role="status"><Check /> Your inquiry has been received. The team can review your requirements.</p>}
-      <Button type="submit" size="lg" disabled={submitting} className="form-submit">{submitting ? "Sending inquiry…" : "Send inquiry"}<Send /></Button>
+      {feedback && <p className="form-feedback form-success" role="status">{feedback}</p>}
+      {handoff && <div className="form-feedback form-error" role="status"><p>{t("Unable to open WhatsApp? Contact us directly.")}</p><p><a href={handoff} target="_blank" rel="noopener noreferrer">{t("Open WhatsApp with your enquiry")}</a></p><p><a href="tel:+918140712205">+91 81407 12205</a> · <a href="mailto:Omfoodandspicesllp@gmail.com">Omfoodandspicesllp@gmail.com</a></p></div>}
+      <Button type="submit" size="lg" disabled={opened} className="form-submit">{opened ? t("WhatsApp opened") : t("Send inquiry")}<Send /></Button>
       <p className="form-note">Availability, specifications, pricing, packaging and shipping arrangements are subject to confirmation.</p>
     </form>
   );
