@@ -544,3 +544,7 @@
 .quotation-theme .floating-whatsapp { background: var(--brand-forest); }
 .quotation-theme .floating-whatsapp:hover { background: var(--brand-olive); }
 .quotation-theme .form-success { border-color: oklch(0.65 0.06 250 / .4); background: oklch(0.96 0.015 250); }
+
+/* Form-only view used by the main website. */
+html:has(.embedded-quote), body:has(.embedded-quote) { margin: 0; background: #faf8f1; overflow: hidden; }
+.embedded-quote { padding: 4px 2px 20px; background: #faf8f1; }
