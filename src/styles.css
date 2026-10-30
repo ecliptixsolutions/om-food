@@ -538,3 +538,9 @@
 }
 .quotation-theme .form-grid input::placeholder,
 .quotation-theme .form-grid textarea::placeholder { color: var(--muted-foreground); }
+
+/* Blue enquiry accents and WhatsApp button; the original phone and message stay unchanged. */
+.quotation-theme { --brand-copper: oklch(0.49 0.075 250); --accent: oklch(0.49 0.075 250); --ring: oklch(0.49 0.075 250); }
+.quotation-theme .floating-whatsapp { background: var(--brand-forest); }
+.quotation-theme .floating-whatsapp:hover { background: var(--brand-olive); }
+.quotation-theme .form-success { border-color: oklch(0.65 0.06 250 / .4); background: oklch(0.96 0.015 250); }
