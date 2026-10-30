@@ -548,3 +548,4 @@
 /* Form-only view used by the main website. */
 html:has(.embedded-quote), body:has(.embedded-quote) { margin: 0; background: #faf8f1; overflow: hidden; }
 .embedded-quote { padding: 4px 2px 20px; background: #faf8f1; }
+.quotation-theme.embedded-quote { min-height: 0; }
