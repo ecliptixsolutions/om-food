@@ -1,6 +1,6 @@
 ﻿# Continuation report
 
-Preserved: homepage, shared design, existing product data, photographs, database migrations and Lovable architecture.
+Preserved: homepage, shared design, existing product data, photographs and TanStack Start architecture. The current local backend uses MySQL.
 
 Completed in this continuation:
 - Added About, Products, Fresh Onions, Dehydrated Onions, Quality & Sourcing, Contact, Privacy and Terms file routes.
@@ -12,8 +12,8 @@ Completed in this continuation:
 - Added route coverage for required pages and product links.
 
 Launch dependencies:
-- Server-only database credential is absent locally. Live persistence, RLS and rate limiting remain unverified against the hosted database.
-- Confirm existing migrations have been applied to Lovable Cloud.
+- Server-only database credential is absent locally. Live persistence and rate limiting remain unverified against a hosted database.
+- Apply and verify the MySQL schema in the intended database before enabling production persistence.
 - Configure and verify inquiry email notifications or monitored inbox access.
 - Confirm product availability, export arrangements, documentation and image rights.
 - Supply separate accurate photographs for dehydrated formats and image-led application sections.

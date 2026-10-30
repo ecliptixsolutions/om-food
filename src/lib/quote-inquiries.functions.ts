@@ -1,6 +1,9 @@
-﻿import { createServerFn } from "@tanstack/react-start";
+import { createHash, randomUUID } from "node:crypto";
+import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
+import type { RowDataPacket } from "mysql2";
 import { z } from "zod";
+import { getMysqlPool } from "@/lib/mysql.server";
 
 const quoteInquirySchema = z.object({
   full_name: z.string().trim().min(1).max(120),
@@ -21,27 +24,54 @@ const quoteInquirySchema = z.object({
 export const submitQuoteInquiry = createServerFn({ method: "POST" })
   .validator((input) => quoteInquirySchema.parse(input))
   .handler(async ({ data }) => {
-    if (!process.env['SUPABASE_SERVICE_ROLE_KEY']) throw new Error("Inquiry storage is unavailable. Use the WhatsApp enquiry form or contact us directly.");
-    const ipAddress = getRequestHeader("cf-connecting-ip") ?? "unknown";
-    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ipAddress));
-    const keyHash = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-    const { data: allowed, error: rateLimitError } = await supabaseAdmin.rpc("allow_quote_inquiry", {
-      _key_hash: keyHash,
-    });
-    if (rateLimitError) {
-      console.error("Unable to validate inquiry rate limit", rateLimitError.message);
-      throw new Error("We could not submit your inquiry right now. Please try again shortly.");
+    const pool = getMysqlPool();
+    const rawIp =
+      getRequestHeader("cf-connecting-ip") ??
+      getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() ??
+      "unknown";
+    const ipHash = createHash("sha256").update(rawIp).digest("hex");
+    const { website: _website, ...inquiry } = data;
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      await connection.execute(
+        "INSERT IGNORE INTO quote_rate_limits (ip_hash,last_submitted_at) VALUES (?, '1970-01-01 00:00:00')",
+        [ipHash],
+      );
+      const [limits] = await connection.execute<Array<RowDataPacket & { allowed: number }>>(
+        "SELECT last_submitted_at < UTC_TIMESTAMP() - INTERVAL 60 SECOND AS allowed FROM quote_rate_limits WHERE ip_hash=? FOR UPDATE",
+        [ipHash],
+      );
+      if (!limits[0]?.allowed)
+        throw new Error("Please wait a minute before sending another inquiry.");
+      await connection.execute(
+        "UPDATE quote_rate_limits SET last_submitted_at=UTC_TIMESTAMP() WHERE ip_hash=?",
+        [ipHash],
+      );
+      await connection.execute(
+        "INSERT INTO quote_inquiries (id,full_name,company_name,business_email,phone,country,product_interest,required_quantity,packaging_preference,destination,delivery_timeline,message,privacy_consent) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [
+          randomUUID(),
+          inquiry.full_name,
+          inquiry.company_name,
+          inquiry.business_email,
+          inquiry.phone,
+          inquiry.country,
+          inquiry.product_interest,
+          inquiry.required_quantity,
+          inquiry.packaging_preference,
+          inquiry.destination,
+          inquiry.delivery_timeline,
+          inquiry.message,
+          inquiry.privacy_consent,
+        ],
+      );
+      await connection.commit();
+      return { accepted: true };
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
     }
-    if (!allowed) throw new Error("Please wait a minute before sending another inquiry.");
-
-    const { error } = await supabaseAdmin.from("quote_inquiries").insert((({ website: _website, ...inquiry }) => inquiry)(data));
-    if (error) {
-      console.error("Unable to save buyer inquiry", error.message);
-      throw new Error("We could not submit your inquiry right now. Please try again shortly.");
-    }
-    return { accepted: true };
   });
-
-

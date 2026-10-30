@@ -12,4 +12,4 @@
 # Architecture decisions
 
 - Keep public content in TanStack Start file-based routes and shared visual elements in `src/components`, because the existing application uses TanStack Start and its generated route tree.
-- Route buyer quote submissions through a validated server function into Lovable Cloud, because inquiries must persist and privileged credentials must never reach the browser.
+- Route buyer quote submissions through a validated server function into MySQL, because inquiries must persist and privileged credentials must never reach the browser.

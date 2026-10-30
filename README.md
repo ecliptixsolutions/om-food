@@ -7,14 +7,14 @@ Existing TanStack Start application, continued without replacing the homepage or
 Use Node.js and the existing lockfile: `npm ci`, then `npm run dev`.
 Run `npm run build`, `npx tsc --noEmit`, and `npm test` before release.
 On Windows PowerShell with restricted script execution, use `npm.cmd` and `npx.cmd`.
-The existing Lovable/Nitro configuration builds a Cloudflare worker. Use the connected Lovable project for publishing, or configure the generated `.output/server/wrangler.json` for the intended Cloudflare account. No deployment was performed in this continuation.
+The build targets Vercel Node Functions via the Nitro `vercel` preset, which is required for `mysql2` TCP connections. Use the connected Vercel project for publishing. No deployment was performed in this continuation.
 
 ## Server configuration
 
-Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as server-only secrets in Lovable Cloud. Never use a VITE prefix for the privileged key.
-Apply the two existing SQL migrations in `drizzle/migrations` to the connected database, in order. They create inquiry storage, RLS and the service-role-only rate-limit function. Verify grants and policies in that environment.
-The form validates requests on the server, rejects a filled honeypot, and uses the existing database rate limit. The `cf-connecting-ip` header must be supplied by a trusted Cloudflare proxy; do not expose the origin to arbitrary spoofed requests. Outside that environment, configure a trusted client-address source before launch. Missing client addresses share the fallback rate limit.
-Success means a database insert was accepted. Email notifications are NOT configured. Arrange a secure server-side email integration or a monitored database inbox before collecting real buyer inquiries. Do not interpret database storage as an emailed notification.
+Set `MYSQL_URL` as a server-only environment variable in Vercel (Production and Preview as needed). Never use a VITE prefix for this value and never commit it to source control.
+Run the idempotent schema and catalogue setup once: `npm run db:migrate:mysql`. The migration creates all required tables and inserts the existing product catalogue if not already present. Back up the database before applying schema changes to a database that contains existing data.
+Provision the first admin account: set `ADMIN_EMAIL` and `ADMIN_PASSWORD` alongside `MYSQL_URL` in a local `.env.local`, then run `npm run db:provision-admin`. See `docs/admin-setup.md` for details.
+The quote form validates requests on the server, rejects a filled honeypot, and uses a database rate limit. A successful submission persists the enquiry to MySQL and then opens WhatsApp for direct contact. Email notifications are NOT configured. Arrange a secure server-side email integration or a monitored admin inbox before collecting real buyer inquiries.
 
 ## Content and SEO
 

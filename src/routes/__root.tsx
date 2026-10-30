@@ -80,13 +80,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "OM Food and Spices LLP" },
-      { name: "description", content: "Fresh and dehydrated onion product inquiries from Gujarat, India." },
-      
+      {
+        name: "description",
+        content: "Dehydrated onion and garlic product inquiries from Gujarat, India.",
+      },
+
       { property: "og:title", content: "OM Food and Spices LLP" },
-      { property: "og:description", content: "Fresh and dehydrated onion product inquiries from Gujarat, India." },
+      {
+        property: "og:description",
+        content: "Dehydrated onion and garlic product inquiries from Gujarat, India.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      
     ],
     links: [
       {
@@ -122,9 +127,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <LanguageProvider><Outlet /></LanguageProvider>
+      <LanguageProvider>
+        <Outlet />
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
-
-

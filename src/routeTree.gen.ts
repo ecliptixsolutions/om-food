@@ -11,15 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DehydratedOnionsRouteImport } from './routes/dehydrated-onions'
-import { Route as FreshOnionsRouteImport } from './routes/fresh-onions'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QualitySourcingRouteImport } from './routes/quality-sourcing'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ApiMediaIdRouteImport } from './routes/api.media.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,6 +34,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -39,11 +47,6 @@ const ContactRoute = ContactRouteImport.update({
 const DehydratedOnionsRoute = DehydratedOnionsRouteImport.update({
   id: '/dehydrated-onions',
   path: '/dehydrated-onions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FreshOnionsRoute = FreshOnionsRouteImport.update({
-  id: '/fresh-onions',
-  path: '/fresh-onions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -66,6 +69,16 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -76,101 +89,123 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiMediaIdRoute = ApiMediaIdRouteImport.update({
+  id: '/api/media/$id',
+  path: '/api/media/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/dehydrated-onions': typeof DehydratedOnionsRoute
-  '/fresh-onions': typeof FreshOnionsRoute
   '/privacy': typeof PrivacyRoute
   '/quality-sourcing': typeof QualitySourcingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/api/media/$id': typeof ApiMediaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/dehydrated-onions': typeof DehydratedOnionsRoute
-  '/fresh-onions': typeof FreshOnionsRoute
   '/privacy': typeof PrivacyRoute
   '/quality-sourcing': typeof QualitySourcingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/api/media/$id': typeof ApiMediaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/dehydrated-onions': typeof DehydratedOnionsRoute
-  '/fresh-onions': typeof FreshOnionsRoute
   '/privacy': typeof PrivacyRoute
   '/quality-sourcing': typeof QualitySourcingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/api/media/$id': typeof ApiMediaIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/dehydrated-onions'
-    | '/fresh-onions'
     | '/privacy'
     | '/quality-sourcing'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/login'
     | '/products/$slug'
+    | '/admin/'
     | '/products/'
+    | '/api/media/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
     | '/dehydrated-onions'
-    | '/fresh-onions'
     | '/privacy'
     | '/quality-sourcing'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/login'
     | '/products/$slug'
+    | '/admin'
     | '/products'
+    | '/api/media/$id'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/dehydrated-onions'
-    | '/fresh-onions'
     | '/privacy'
     | '/quality-sourcing'
     | '/sitemap.xml'
     | '/terms'
+    | '/admin/login'
     | '/products/$slug'
+    | '/admin/'
     | '/products/'
+    | '/api/media/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ContactRoute: typeof ContactRoute
   DehydratedOnionsRoute: typeof DehydratedOnionsRoute
-  FreshOnionsRoute: typeof FreshOnionsRoute
   PrivacyRoute: typeof PrivacyRoute
   QualitySourcingRoute: typeof QualitySourcingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  ApiMediaIdRoute: typeof ApiMediaIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -189,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -201,13 +243,6 @@ declare module '@tanstack/react-router' {
       path: '/dehydrated-onions'
       fullPath: '/dehydrated-onions'
       preLoaderRoute: typeof DehydratedOnionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fresh-onions': {
-      id: '/fresh-onions'
-      path: '/fresh-onions'
-      fullPath: '/fresh-onions'
-      preLoaderRoute: typeof FreshOnionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -238,6 +273,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
@@ -252,21 +301,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/media/$id': {
+      id: '/api/media/$id'
+      path: '/api/media/$id'
+      fullPath: '/api/media/$id'
+      preLoaderRoute: typeof ApiMediaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   ContactRoute: ContactRoute,
   DehydratedOnionsRoute: DehydratedOnionsRoute,
-  FreshOnionsRoute: FreshOnionsRoute,
   PrivacyRoute: PrivacyRoute,
   QualitySourcingRoute: QualitySourcingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  ApiMediaIdRoute: ApiMediaIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

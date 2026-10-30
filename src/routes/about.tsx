@@ -1,5 +1,50 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageIntro, InquiryBanner } from "@/components/site";
 import { pageHead } from "@/lib/site-metadata";
-export const Route = createFileRoute("/about")({ head: () => pageHead("About Us | OM Food and Spices LLP", "Meet OM Food and Spices LLP, an onion product business based in Kikariya, Gujarat, India.", "/about"), component: About });
-function About() { return <SiteLayout><PageIntro eyebrow="About our business" title="Connecting onion products with business needs" description="OM Food and Spices LLP is based in Gujarat, India, and focuses on fresh onion products and dehydrated onion ingredients for business buyers." /><section className="section section-white"><div className="wrap text-section"><h2>A straightforward conversation</h2><p>We aim to make product inquiries straightforward by helping customers discuss their requirements, preferred formats, quantities and supply needs directly with our team.</p><h3>Our product focus</h3><p>Discuss fresh onions and dehydrated ingredient formats for wholesale distribution, food service and food manufacturing. Each product and format requires availability confirmation.</p><h3>Our approach to sourcing</h3><p>Share your preferred variety, format, grade, packaging and destination. Product availability, documentation and supply arrangements must be agreed with the company before an order is accepted.</p><h3>Serving business buyers</h3><p>Importers, distributors, wholesalers and food businesses can contact us with bulk requirements. Our business address is Survey No. 125, OM Food and Spices LLP, P5, Kikariya, Gujarat 364280, India.</p></div></section><InquiryBanner /></SiteLayout>; }
+export const Route = createFileRoute("/about")({
+  head: () =>
+    pageHead(
+      "About Us | OM Food and Spices LLP",
+      "Meet OM Food and Spices LLP, an onion product business based in Kikariya, Gujarat, India.",
+      "/about",
+    ),
+  component: About,
+});
+function About() {
+  return (
+    <SiteLayout>
+      <PageIntro
+        eyebrow="About our business"
+        title="Connecting dehydrated ingredients with business needs"
+        description="OM Food and Spices LLP is based in Gujarat, India, and presents dehydrated onion and garlic ingredient inquiry categories for business buyers."
+      />
+      <section className="section section-white">
+        <div className="wrap text-section">
+          <h2>A straightforward conversation</h2>
+          <p>
+            We aim to make product inquiries straightforward by helping customers discuss their
+            requirements, preferred formats, quantities and supply needs directly with our team.
+          </p>
+          <h3>Our product focus</h3>
+          <p>
+            Discuss dehydrated onion and garlic ingredient formats for food service and food
+            manufacturing. Each product and format requires availability confirmation.
+          </p>
+          <h3>Our approach to sourcing</h3>
+          <p>
+            Share your preferred format, grade, packaging and destination. Product availability,
+            documentation and supply arrangements must be agreed with the company before an order is
+            accepted.
+          </p>
+          <h3>Serving business buyers</h3>
+          <p>
+            Importers, distributors, wholesalers and food businesses can contact us with bulk
+            requirements. Our business address is Survey No. 125, OM Food and Spices LLP, P5,
+            Kikariya, Gujarat 364280, India.
+          </p>
+        </div>
+      </section>
+      <InquiryBanner />
+    </SiteLayout>
+  );
+}
