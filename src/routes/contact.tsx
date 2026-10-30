@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageIntro, ContactDetails, QuoteForm } from "@/components/site";
 import { pageHead } from "@/lib/site-metadata";
-export const Route = createFileRoute("/contact")({ validateSearch: (search: Record<string, unknown>) => ({ embed: search["embed"] === "1", product: typeof search["product"] === "string" && search["product"].length <= 160 ? search["product"] : undefined }), head: () => pageHead("Contact & Request a Quote | OM Food and Spices LLP", "Contact our Gujarat team for onion product details and bulk quotations. Call +91 81407 12205.", "/contact"), component: Contact });
+export const Route = createFileRoute("/contact")({ validateSearch: (search: Record<string, unknown>) => ({ embed: (search["embed"] === "1" || search["embed"] === 1), product: typeof search["product"] === "string" && search["product"].length <= 160 ? search["product"] : undefined }), head: () => pageHead("Contact & Request a Quote | OM Food and Spices LLP", "Contact our Gujarat team for onion product details and bulk quotations. Call +91 81407 12205.", "/contact"), component: Contact });
 function EmbeddedQuote({ product }: { product?: string }) {
  const form = useRef<HTMLDivElement>(null);
  useEffect(() => {
