@@ -40,7 +40,7 @@ function About() {
           <p>
             Importers, distributors, wholesalers and food businesses can contact us with bulk
             requirements. Our business address is R.S. No. 125 Paiki 5,
-            Kikariya, Mahuva, Bhavnagar, Gujarat 364280, India.
+            Kikariya, Mahuva, Bhavnagar, Gujarat, India.
           </p>
         </div>
       </section>
