@@ -1,4 +1,4 @@
-﻿export const siteOrigin = (import.meta.env['VITE_SITE_URL'] || "https://example.com").replace(/\/$/, "");
+export const siteOrigin = (import.meta.env['VITE_SITE_URL'] || "https://example.com").replace(/\/$/, "");
 export function pageHead(title: string, description: string, path: string) {
   const url = `${siteOrigin}${path}`;
   return {

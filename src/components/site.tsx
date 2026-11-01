@@ -141,11 +141,11 @@ export function SiteFooter() {
             <Mail /> Omfoodandspicesllp@gmail.com
           </a>
           <a
-            href="https://www.google.com/maps/search/?api=1&query=Survey+No.+125%2C+OM+Food+and+Spices+LLP%2C+P5%2C+Kikariya%2C+Gujarat+364280%2C+India"
+            href="https://www.google.com/maps/search/?api=1&query=R.S.+No.+125+Paiki+5%2C+Kikariya%2C+Mahuva%2C+Bhavnagar%2C+Gujarat+364280%2C+India"
             target="_blank"
             rel="noreferrer"
           >
-            <MapPin /> Survey No. 125, OM Food and Spices LLP, P5, Kikariya, Gujarat 364280, India
+            <MapPin /> R.S. No. 125 Paiki 5, Kikariya, Mahuva, Bhavnagar, Gujarat 364280, India
           </a>
           <span className="footer-hours">
             Mon–Sun · 9:00 AM–6:30 PM IST
@@ -656,15 +656,15 @@ export function ContactDetails() {
         </span>
       </a>
       <a
-        href="https://www.google.com/maps/search/?api=1&query=Survey+No.+125%2C+OM+Food+and+Spices+LLP%2C+P5%2C+Kikariya%2C+Gujarat+364280%2C+India"
+        href="https://www.google.com/maps/search/?api=1&query=R.S.+No.+125+Paiki+5%2C+Kikariya%2C+Mahuva%2C+Bhavnagar%2C+Gujarat+364280%2C+India"
         target="_blank"
         rel="noreferrer"
       >
         <MapPin />
         <span>
-          <small>Business address</small>Survey No. 125, OM Food and Spices LLP, P5,
+          <small>Business address</small>R.S. No. 125 Paiki 5,
           <br />
-          Kikariya, Gujarat 364280, India
+          Kikariya, Mahuva, Bhavnagar, Gujarat 364280, India
         </span>
       </a>
       <div className="contact-hours">

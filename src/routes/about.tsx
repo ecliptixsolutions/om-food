@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageIntro, InquiryBanner } from "@/components/site";
 import { pageHead } from "@/lib/site-metadata";
 export const Route = createFileRoute("/about")({
@@ -39,8 +39,8 @@ function About() {
           <h3>Serving business buyers</h3>
           <p>
             Importers, distributors, wholesalers and food businesses can contact us with bulk
-            requirements. Our business address is Survey No. 125, OM Food and Spices LLP, P5,
-            Kikariya, Gujarat 364280, India.
+            requirements. Our business address is R.S. No. 125 Paiki 5,
+            Kikariya, Mahuva, Bhavnagar, Gujarat 364280, India.
           </p>
         </div>
       </section>

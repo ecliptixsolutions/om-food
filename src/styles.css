@@ -549,3 +549,10 @@
 html:has(.embedded-quote), body:has(.embedded-quote) { margin: 0; background: #faf8f1; overflow: hidden; }
 .embedded-quote { padding: 4px 2px 20px; background: #faf8f1; }
 .quotation-theme.embedded-quote { min-height: 0; }
+
+/* Client-approved green, warm cream and copper palette. */
+:root { --brand-paper: #faf5ea; --brand-white: #f1e8d8; --brand-forest: #183e30; --brand-olive: #365b44; --brand-copper: #b66b43; --brand-charcoal: #243028; }
+.quotation-theme { --brand-copper: #b66b43; --accent: #b66b43; --ring: #b66b43; --background: #faf5ea; }
+.section-paper, .split-section:nth-of-type(odd) { background: #faf5ea; }
+.section-white, .split-section:nth-of-type(even) { background: #f1e8d8; }
+.section-heading h2 em, .text-section h2 em, .split-copy h2 em { color: var(--brand-copper); font-style: normal; }

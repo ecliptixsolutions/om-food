@@ -1,7 +1,7 @@
 import { HeroCarousel } from "@/components/hero-carousel";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Globe2, Leaf, PackageCheck, Sprout } from "lucide-react";
-import dehydratedOnion from "@/assets/dehydrated-onion.jpg";
+
 import {
   Eyebrow,
   InquiryBanner,
@@ -142,7 +142,7 @@ function HomePage() {
         </div>
         <img
           className="split-image"
-          src={dehydratedOnion}
+          src="/catalog/onion-flakes.webp"
           alt="Dehydrated onion pieces"
           loading="lazy"
         />
@@ -230,7 +230,7 @@ function HomePage() {
               Discuss product specifications <ArrowRight />
             </Link>
           </div>
-          <img src={dehydratedOnion} alt="Dehydrated onion ingredient" loading="lazy" />
+          <img src="/catalog/onion-flakes.webp" alt="Dehydrated onion ingredient" loading="lazy" />
         </div>
       </section>
 
