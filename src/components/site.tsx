@@ -12,7 +12,6 @@ import {
   Send,
 } from "lucide-react";
 import { FloatingContact } from "@/components/floating-contact";
-import { LanguageSelector } from "@/components/language-selector";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/i18n";
@@ -77,7 +76,6 @@ export function SiteHeader() {
               ),
             )}
           </nav>
-          <LanguageSelector />
           <Button asChild className="header-cta">
             <Link to="/contact" search={{ product: undefined }}>
               {t("Request a quote")} <ArrowRight aria-hidden="true" />

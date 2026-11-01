@@ -240,12 +240,6 @@ type LanguageContextValue = { language: Language; setLanguage: (language: Langua
 const LanguageContext = createContext<LanguageContextValue>({ language: "en", setLanguage: () => {}, t: text => copy[text]?.en ?? text });
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>("en");
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(preferenceKey);
-      if (supportedLanguages.includes(saved as Language)) setLanguageState(saved as Language);
-    } catch { /* English remains the safe default when storage is unavailable. */ }
-  }, []);
   const setLanguage = (next: Language) => {
     setLanguageState(next);
     try { localStorage.setItem(preferenceKey, next); } catch { /* The current page still changes language. */ }
