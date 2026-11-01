@@ -149,11 +149,6 @@ export function SiteFooter() {
           >
             <MapPin /> R.S. No. 125 Paiki 5, Kikariya, Mahuva, Bhavnagar, Gujarat 364280, India
           </a>
-          <span className="footer-hours">
-            Mon–Sun · 9:00 AM–6:30 PM IST
-            <br />
-            Subject to holiday variations
-          </span>
         </div>
       </div>
       <div className="footer-bottom wrap">
