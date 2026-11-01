@@ -12,9 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CertificatesRouteImport } from './routes/certificates'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DehydratedOnionsRouteImport } from './routes/dehydrated-onions'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProcessRouteImport } from './routes/process'
 import { Route as QualitySourcingRouteImport } from './routes/quality-sourcing'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -39,6 +41,11 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertificatesRoute = CertificatesRouteImport.update({
+  id: '/certificates',
+  path: '/certificates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -52,6 +59,11 @@ const DehydratedOnionsRoute = DehydratedOnionsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QualitySourcingRoute = QualitySourcingRouteImport.update({
@@ -99,9 +111,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/certificates': typeof CertificatesRoute
   '/contact': typeof ContactRoute
   '/dehydrated-onions': typeof DehydratedOnionsRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
   '/quality-sourcing': typeof QualitySourcingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -114,9 +128,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/certificates': typeof CertificatesRoute
   '/contact': typeof ContactRoute
   '/dehydrated-onions': typeof DehydratedOnionsRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
   '/quality-sourcing': typeof QualitySourcingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -131,9 +147,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/certificates': typeof CertificatesRoute
   '/contact': typeof ContactRoute
   '/dehydrated-onions': typeof DehydratedOnionsRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
   '/quality-sourcing': typeof QualitySourcingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -149,9 +167,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/certificates'
     | '/contact'
     | '/dehydrated-onions'
     | '/privacy'
+    | '/process'
     | '/quality-sourcing'
     | '/sitemap.xml'
     | '/terms'
@@ -164,9 +184,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/certificates'
     | '/contact'
     | '/dehydrated-onions'
     | '/privacy'
+    | '/process'
     | '/quality-sourcing'
     | '/sitemap.xml'
     | '/terms'
@@ -180,9 +202,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/certificates'
     | '/contact'
     | '/dehydrated-onions'
     | '/privacy'
+    | '/process'
     | '/quality-sourcing'
     | '/sitemap.xml'
     | '/terms'
@@ -197,9 +221,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  CertificatesRoute: typeof CertificatesRoute
   ContactRoute: typeof ContactRoute
   DehydratedOnionsRoute: typeof DehydratedOnionsRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProcessRoute: typeof ProcessRoute
   QualitySourcingRoute: typeof QualitySourcingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
@@ -231,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/certificates': {
+      id: '/certificates'
+      path: '/certificates'
+      fullPath: '/certificates'
+      preLoaderRoute: typeof CertificatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -250,6 +283,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quality-sourcing': {
@@ -327,9 +367,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  CertificatesRoute: CertificatesRoute,
   ContactRoute: ContactRoute,
   DehydratedOnionsRoute: DehydratedOnionsRoute,
   PrivacyRoute: PrivacyRoute,
+  ProcessRoute: ProcessRoute,
   QualitySourcingRoute: QualitySourcingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,

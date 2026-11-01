@@ -26,6 +26,8 @@ const navigation = [
   ["Dehydrated onions", "/dehydrated-onions"],
   ["Dehydrated Garlic", "/products", "dehydrated-garlic"],
   ["Sourcing", "/quality-sourcing"],
+  ["Process", "/process"],
+  ["Certificates", "/certificates"],
 ] as const;
 
 export function BrandMark({ inverse = false }: { inverse?: boolean }) {
