@@ -34,7 +34,12 @@ function Products() {
     );
   }, [searchCategory]);
   const categories = ["", "Dehydrated onions", "Dehydrated garlic"];
-  const families = ["White onion", "Red onion", "Pink onion", "Garlic"];
+  const families = [
+    { name: "White onion", image: "/catalog/white-onion-reference.webp", alt: "Illustrative bowl of dehydrated white onion" },
+    { name: "Red onion", image: "/catalog/red-onion-reference.webp", alt: "Illustrative bowl of dehydrated red onion" },
+    { name: "Pink onion", image: "/catalog/pink-onion-reference.webp", alt: "Illustrative bowl of dehydrated pink onion" },
+    { name: "Garlic", image: "/images/hero-garlic-dried.jpg", alt: "Illustrative fresh garlic bulbs" },
+  ];
   const formats = ["Flakes / Kibbled", "Chopped", "Minced", "Granules", "Powder"];
   return (
     <SiteLayout>
@@ -77,9 +82,13 @@ function Products() {
           </div>
           <div className="format-family-grid">
             {families.map((family) => (
-              <article className="format-family-card" key={family}>
-                <h3>{family}</h3>
+              <article className="format-family-card" key={family.name}>
+                <img src={family.image} alt={family.alt} loading="lazy" width="480" height="320" />
+                <div className="format-family-copy">
+                <h3>{family.name}</h3>
                 <ul>{formats.map((format) => <li key={format}>{format}</li>)}</ul>
+                <small>Representative image · forms subject to confirmation</small>
+                </div>
               </article>
             ))}
           </div>
